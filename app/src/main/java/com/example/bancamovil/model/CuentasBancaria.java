@@ -8,6 +8,7 @@ public class CuentasBancaria implements Serializable {
     private Integer IdUsuario;
     private double Saldo;
     private String No_Cuenta;
+    private String Descripcion;
     private Usuario IdUsuarioNavigation;
     private List<Movimiento> Movimientos;
     private List<TransferenciasExterna> TransferenciasExternas;
@@ -43,6 +44,10 @@ public class CuentasBancaria implements Serializable {
     public void setNo_Cuenta(String no_Cuenta) {
         No_Cuenta = no_Cuenta;
     }
+
+    public String getDescripcion() { return Descripcion; }
+
+    public void setDescripcion(String descripcion) { Descripcion = descripcion; }
 
     public Usuario getIdUsuarioNavigation() {
         return IdUsuarioNavigation;

@@ -81,7 +81,7 @@ public class FragmentShorts extends Fragment implements ShortsAdapter.OnTransfer
     private List<ShortItem> createSampleShortItemList(List<CuentasBancaria> cuentasBancarias) {
         List<ShortItem> shortItemList = new ArrayList<>();
         for (CuentasBancaria cuenta : cuentasBancarias) {
-            String title = cuenta.getNo_Cuenta(); // Reemplaza 'getTitulo()' con el método adecuado para obtener el título de la cuenta
+            String title = cuenta.getDescripcion(); // Reemplaza 'getTitulo()' con el método adecuado para obtener el título de la cuenta
             String description = cuenta.getNo_Cuenta(); // Reemplaza 'getDescripcion()' con el método adecuado para obtener la descripción de la cuenta
             shortItemList.add(new ShortItem(title, description));
         }

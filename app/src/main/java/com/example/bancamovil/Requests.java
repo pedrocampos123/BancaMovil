@@ -116,12 +116,14 @@ public class Requests extends AsyncTask<String, Void, String> {
                                     int idUsuarioCuenta = cuentaJson.getInt("IdUsuario");
                                     double saldo = cuentaJson.getDouble("Saldo");
                                     String noCuenta = cuentaJson.getString("No_Cuenta");
+                                    String descripcion = cuentaJson.getString("Descripcion");
 
                                     CuentasBancaria cuenta = new CuentasBancaria();
                                     cuenta.setIdCuenta(idCuenta);
                                     cuenta.setIdUsuario(idUsuarioCuenta);
                                     cuenta.setSaldo(saldo);
                                     cuenta.setNo_Cuenta(noCuenta);
+                                    cuenta.setDescripcion(descripcion);
 
                                     cuentasExtras.add(cuenta);
                                 }
