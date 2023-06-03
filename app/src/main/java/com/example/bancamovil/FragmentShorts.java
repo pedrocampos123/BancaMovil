@@ -1,64 +1,79 @@
 package com.example.bancamovil;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentShorts#newInstance} factory method to
- * create an instance of this fragment.
- */
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.example.bancamovil.R;
+import com.example.bancamovil.model.CuentasBancaria;
+import com.example.bancamovil.model.Usuario;
+import com.google.android.material.card.MaterialCardView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class FragmentShorts extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private RecyclerView recyclerView;
+    private ShortsAdapter adapter;
+    private Usuario usuario;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 
     public FragmentShorts() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentShorts.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FragmentShorts newInstance(String param1, String param2) {
-        FragmentShorts fragment = new FragmentShorts();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static FragmentShorts newInstance() {
+        return new FragmentShorts();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_shorts, container, false);
+
+        // Obtener el objeto Usuario de la actividad DashboardActivity
+        if (getActivity() instanceof DashboardActivity) {
+            DashboardActivity dashboardActivity = (DashboardActivity) getActivity();
+            Usuario usuario = dashboardActivity.getUsuario();
+
+            // Obtener la lista de cuentas bancarias del usuario
+            List<CuentasBancaria> cuentasBancarias = usuario.getCuentasBancaria();
+
+            // Crear la lista de elementos para el RecyclerView
+            List<ShortItem> shortItemList = createSampleShortItemList(cuentasBancarias);
+
+            // Configurar el RecyclerView y su adaptador
+            recyclerView = view.findViewById(R.id.recyclerView);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            adapter = new ShortsAdapter(shortItemList);
+            recyclerView.setAdapter(adapter);
         }
+
+        return view;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_shorts, container, false);
+    private List<ShortItem> createSampleShortItemList(List<CuentasBancaria> cuentasBancarias) {
+        List<ShortItem> shortItemList = new ArrayList<>();
+        for (CuentasBancaria cuenta : cuentasBancarias) {
+            String title = cuenta.getNo_Cuenta(); // Reemplaza 'getTitulo()' con el método adecuado para obtener el título de la cuenta
+            String description = cuenta.getNo_Cuenta(); // Reemplaza 'getDescripcion()' con el método adecuado para obtener la descripción de la cuenta
+            shortItemList.add(new ShortItem(title, description));
+        }
+        return shortItemList;
+    }
+
+    private List<CuentasBancaria> obtenerCuentasBancarias() {
+        // Aquí debes implementar la lógica para obtener la lista de cuentas bancarias del usuario
+        // Puedes obtenerla de la base de datos, de una API, etc.
+        // Por ahora, simplemente devuelve una lista vacía como ejemplo
+        return new ArrayList<>();
     }
 }

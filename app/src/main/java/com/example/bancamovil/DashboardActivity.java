@@ -10,14 +10,13 @@ import com.example.bancamovil.databinding.ActivityDashboardBinding;
 import com.example.bancamovil.model.CuentasBancaria;
 import com.example.bancamovil.model.Usuario;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
 
     private ActivityDashboardBinding binding;
+    private Usuario usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +35,7 @@ public class DashboardActivity extends AppCompatActivity {
         // Recuperar las cuentas bancarias enviadas en forma de lista de putExtra
         ArrayList<CuentasBancaria> cuentasExtras = (ArrayList<CuentasBancaria>) intent.getSerializableExtra("cuentasExtras");
 
-        Usuario usuario = new Usuario();
+        usuario = new Usuario();
         usuario.setIdUsuario(idUsuario);
         usuario.setNombre(nombre);
         usuario.setApellido(apellido);
@@ -45,10 +44,16 @@ public class DashboardActivity extends AppCompatActivity {
         usuario.setCuentasBancaria(cuentasExtras);
 
         // Asignar el objeto Usuario a los fragmentos que lo necesiten
-        Fragment homeFragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("usuario", usuario);
-        homeFragment.setArguments(args);
+        HomeFragment homeFragment = new HomeFragment();
+        FragmentShorts shortsFragment = new FragmentShorts();
+        FragmentSubscriptions subscriptionsFragment = new FragmentSubscriptions();
+        FragmentLibrary libraryFragment = new FragmentLibrary();
+
+        homeFragment.setUsuario(usuario);
+        shortsFragment.setUsuario(usuario);
+        subscriptionsFragment.setUsuario(usuario);
+        libraryFragment.setUsuario(usuario);
+
         replaceFragment(homeFragment);
 
         binding.bottomNavigationView.setBackground(null);
@@ -76,5 +81,9 @@ public class DashboardActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
     }
 }

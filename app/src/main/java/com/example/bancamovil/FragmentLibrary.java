@@ -3,10 +3,13 @@ package com.example.bancamovil;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.bancamovil.model.Usuario;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +17,14 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class FragmentLibrary extends Fragment {
+
+    private RecyclerView recyclerView;
+    private ShortsAdapter adapter;
+    private Usuario usuario;
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bancamovil.model.CuentasBancaria;
 import com.example.bancamovil.model.Usuario;
@@ -20,6 +21,14 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
+
+    private RecyclerView recyclerView;
+    private ShortsAdapter adapter;
+    private Usuario usuario;
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 
     private TextView nameTextView;
     private TextView lastNameTextView;
