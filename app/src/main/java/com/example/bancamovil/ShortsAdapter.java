@@ -35,15 +35,6 @@ public class ShortsAdapter extends RecyclerView.Adapter<ShortsAdapter.ShortViewH
         ShortItem shortItem = shortItemList.get(position);
         holder.titleTextView.setText(shortItem.getTitle());
         holder.descriptionTextView.setText(shortItem.getDescription());
-
-        holder.transferButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (transferClickListener != null) {
-                    transferClickListener.onTransferClick(shortItem);
-                }
-            }
-        });
     }
 
     @Override
@@ -54,13 +45,11 @@ public class ShortsAdapter extends RecyclerView.Adapter<ShortsAdapter.ShortViewH
     static class ShortViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
         TextView descriptionTextView;
-        Button transferButton;
 
         ShortViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.titleTextView);
             descriptionTextView = itemView.findViewById(R.id.descriptionTextView);
-            transferButton = itemView.findViewById(R.id.transferButton);
         }
     }
 

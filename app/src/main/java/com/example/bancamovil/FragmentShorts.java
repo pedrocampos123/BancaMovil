@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -60,8 +61,19 @@ public class FragmentShorts extends Fragment implements ShortsAdapter.OnTransfer
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             adapter = new ShortsAdapter(shortItemList, this); // Pasar la instancia del Fragment como OnTransferClickListener
             recyclerView.setAdapter(adapter);
-
         }
+
+        Button transferButton = view.findViewById(R.id.transferButton);
+        transferButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Implementa la lógica para manejar el evento de clic en el botón de transferencia aquí
+                // Puedes acceder al elemento seleccionado a través del adaptador o utilizando la posición
+                // Ejemplo: ShortItem selectedItem = adapter.getSelectedItem();
+                // Luego, puedes obtener los valores de CuentaOrigen, CuentaDestino y monto del objeto selectedItem
+                // y realizar las acciones necesarias, como mostrar un diálogo de confirmación o iniciar una nueva actividad.
+            }
+        });
 
         return view;
     }
