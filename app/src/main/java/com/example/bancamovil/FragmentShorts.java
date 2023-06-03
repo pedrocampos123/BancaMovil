@@ -17,7 +17,7 @@ import com.google.android.material.card.MaterialCardView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentShorts extends Fragment {
+public class FragmentShorts extends Fragment implements ShortsAdapter.OnTransferClickListener {
 
     private RecyclerView recyclerView;
     private ShortsAdapter adapter;
@@ -57,7 +57,7 @@ public class FragmentShorts extends Fragment {
             // Configurar el RecyclerView y su adaptador
             recyclerView = view.findViewById(R.id.recyclerView);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            adapter = new ShortsAdapter(shortItemList);
+            adapter = new ShortsAdapter(shortItemList, this); // Pasar la instancia del Fragment como OnTransferClickListener
             recyclerView.setAdapter(adapter);
         }
 
@@ -72,5 +72,12 @@ public class FragmentShorts extends Fragment {
             shortItemList.add(new ShortItem(title, description));
         }
         return shortItemList;
+    }
+
+    @Override
+    public void onTransferClick(ShortItem shortItem) {
+        // Implementa la lógica para manejar el evento de clic en el botón de transferencia aquí
+        // Puedes acceder a los valores de CuentaOrigen, CuentaDestino y monto desde el objeto shortItem
+        // y realizar las acciones necesarias, como mostrar un diálogo de confirmación o iniciar una nueva actividad.
     }
 }
