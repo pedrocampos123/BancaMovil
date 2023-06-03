@@ -31,18 +31,22 @@ public class FragmentShorts extends Fragment {
         // Required empty public constructor
     }
 
-    public static FragmentShorts newInstance() {
-        return new FragmentShorts();
+    public static FragmentShorts newInstance(Usuario usuario) {
+        FragmentShorts fragment = new FragmentShorts();
+        Bundle args = new Bundle();
+        args.putSerializable("usuario", usuario);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_shorts, container, false);
 
-        // Obtener el objeto Usuario de la actividad DashboardActivity
-        if (getActivity() instanceof DashboardActivity) {
-            DashboardActivity dashboardActivity = (DashboardActivity) getActivity();
-            Usuario usuario = dashboardActivity.getUsuario();
+        // Obtener el objeto Usuario del Bundle en el DashboardActivity
+        Bundle args = getArguments();
+        if (args != null) {
+            usuario = (Usuario) args.getSerializable("usuario");
 
             // Obtener la lista de cuentas bancarias del usuario
             List<CuentasBancaria> cuentasBancarias = usuario.getCuentasBancaria();
@@ -68,12 +72,5 @@ public class FragmentShorts extends Fragment {
             shortItemList.add(new ShortItem(title, description));
         }
         return shortItemList;
-    }
-
-    private List<CuentasBancaria> obtenerCuentasBancarias() {
-        // Aquí debes implementar la lógica para obtener la lista de cuentas bancarias del usuario
-        // Puedes obtenerla de la base de datos, de una API, etc.
-        // Por ahora, simplemente devuelve una lista vacía como ejemplo
-        return new ArrayList<>();
     }
 }

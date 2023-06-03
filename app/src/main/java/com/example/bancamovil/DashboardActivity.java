@@ -6,12 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
 import com.example.bancamovil.databinding.ActivityDashboardBinding;
 import com.example.bancamovil.model.CuentasBancaria;
 import com.example.bancamovil.model.Usuario;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -44,15 +44,11 @@ public class DashboardActivity extends AppCompatActivity {
         usuario.setCuentasBancaria(cuentasExtras);
 
         // Asignar el objeto Usuario a los fragmentos que lo necesiten
-        HomeFragment homeFragment = new HomeFragment();
-        FragmentShorts shortsFragment = new FragmentShorts();
+        HomeFragment homeFragment = HomeFragment.newInstance(usuario);
+        FragmentShorts shortsFragment = FragmentShorts.newInstance(usuario);
+
         FragmentSubscriptions subscriptionsFragment = new FragmentSubscriptions();
         FragmentLibrary libraryFragment = new FragmentLibrary();
-
-        homeFragment.setUsuario(usuario);
-        shortsFragment.setUsuario(usuario);
-        subscriptionsFragment.setUsuario(usuario);
-        libraryFragment.setUsuario(usuario);
 
         replaceFragment(homeFragment);
 
@@ -60,16 +56,16 @@ public class DashboardActivity extends AppCompatActivity {
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:
-                    replaceFragment(new HomeFragment());
+                    replaceFragment(homeFragment);
                     break;
                 case R.id.shortcut:
-                    replaceFragment(new FragmentShorts());
+                    replaceFragment(shortsFragment);
                     break;
                 case R.id.subscriptions:
-                    replaceFragment(new FragmentSubscriptions());
+                    replaceFragment(subscriptionsFragment);
                     break;
                 case R.id.library:
-                    replaceFragment(new FragmentLibrary());
+                    replaceFragment(libraryFragment);
                     break;
             }
             return true;
@@ -81,9 +77,5 @@ public class DashboardActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
     }
 }
