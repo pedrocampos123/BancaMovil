@@ -1,14 +1,18 @@
 package com.example.bancamovil;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+
+import com.example.bancamovil.model.CuentasBancaria;
+import com.example.bancamovil.model.Usuario;
 import com.google.android.material.card.MaterialCardView;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +23,7 @@ public class HomeFragment extends Fragment {
 
     private TextView nameTextView;
     private TextView lastNameTextView;
+    private TextView welcomeTextView;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -38,7 +43,7 @@ public class HomeFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-//hola
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,21 +54,37 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        MaterialCardView cardView = view.findViewById(R.id.cardView);
-        nameTextView = view.findViewById(R.id.nameTextView);
-        lastNameTextView = view.findViewById(R.id.lastNameTextView);
+        // Obtener el objeto Usuario del Bundle
+        Bundle args = getArguments();
+        if (args != null) {
+            Usuario usuario = (Usuario) args.getSerializable("usuario");
+            if (usuario != null) {
+                // Acceder a los atributos del objeto Usuario
+                int idUsuario = usuario.getIdUsuario();
+                String nombre = usuario.getNombre();
+                String apellido = usuario.getApellido();
+                String correoElectronico = usuario.getCorreoElectronico();
+                String contrasena = usuario.getContrasena();
+                List<CuentasBancaria> cuentasBancarias = usuario.getCuentasBancaria();
 
-        // Simulación de datos del usuario
-        String nombre = "John";
-        String apellido = "Doe";
+                // Realizar las operaciones necesarias con los datos del usuario
+                // ...
 
-        nameTextView.setText(nombre);
-        lastNameTextView.setText(apellido);
+                // Actualizar la interfaz de usuario según los datos del usuario
+                MaterialCardView cardView = view.findViewById(R.id.cardView);
+                TextView nameTextView = view.findViewById(R.id.nameTextView);
+                TextView lastNameTextView = view.findViewById(R.id.lastNameTextView);
+
+                nameTextView.setText(nombre);
+                lastNameTextView.setText(apellido);
+            }
+        }
 
         return view;
     }
+
+
 }
