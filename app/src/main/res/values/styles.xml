@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
+        <!-- Otros atributos de estilo de la aplicación -->
+    </style>
+
+    <style name="ShapeAppearanceOverlay.App.Image" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="ShapeableImageViewStyle" parent="">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.App.Image</item>
+    </style>
+
+    <style name="Button.Rounded" parent="Widget.MaterialComponents.Button">
+        <item name="shapeAppearance">@style/ShapeAppearanceOverlay.App.Button.Rounded</item>
+        <item name="backgroundTint">@color/colorLoginBottom</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.App.Button.Rounded" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+</resources>
+

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <item
+        android:id="@+id/home"
+        android:title="Home"
+        android:icon="@drawable/success"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <item
+        android:id="@+id/shortcut"
+        android:title="Shorts"
+        android:icon="@drawable/success"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
+
+    <item
+        android:id="@+id/fab"
+        android:title=""
+        android:enabled="false"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <item
+        android:id="@+id/subscriptions"
+        android:title="Subscriptions"
+        android:icon="@drawable/success"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <item
+        android:id="@+id/library"
+        android:title="Library"
+        android:icon="@drawable/success"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</menu>
