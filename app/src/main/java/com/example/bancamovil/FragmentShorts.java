@@ -55,10 +55,12 @@ public class FragmentShorts extends Fragment implements ShortsAdapter.OnTransfer
             List<ShortItem> shortItemList = createSampleShortItemList(cuentasBancarias);
 
             // Configurar el RecyclerView y su adaptador
+            MaterialCardView cardView = view.findViewById(R.id.cardView);
             recyclerView = view.findViewById(R.id.recyclerView);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             adapter = new ShortsAdapter(shortItemList, this); // Pasar la instancia del Fragment como OnTransferClickListener
             recyclerView.setAdapter(adapter);
+
         }
 
         return view;
