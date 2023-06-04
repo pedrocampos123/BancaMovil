@@ -1,29 +1,13 @@
 package com.example.bancamovil;
 
-import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import com.example.bancamovil.Commom.Utilities;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -48,30 +32,18 @@ public class MainActivity extends AppCompatActivity {
                 String email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
 
-                if (ConnectionTest()) {
+                Utilities utilities = new Utilities(MainActivity.this);
+                if (utilities.ConnectionTest()) {
                     // Ejecutar la llamada a la API en un hilo separado utilizando AsyncTask
                     //new APICallTask().execute(email, password);
-                    Requests task = new Requests(MainActivity.this);
+                    RequestLogin task = new RequestLogin(MainActivity.this);
                     task.execute(email, password);
                 }
+
                 etEmail.setText("");
                 etPassword.setText("");
             }
         });
-    }
-
-    private Boolean ConnectionTest(){
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(MainActivity.this.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        boolean isConnected = networkInfo != null && networkInfo.isConnected();
-
-        if (isConnected) {
-            return true;
-        } else {
-            // No hay conexión a Internet, mostrar mensaje informativo
-            AlertDialogHelper.showAlertDialog(MainActivity.this, "No hay conexión a Internet", "Information");
-            return false;
-        }
     }
 
 }

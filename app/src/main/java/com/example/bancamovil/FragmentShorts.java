@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.bancamovil.Commom.Utilities;
 import com.example.bancamovil.R;
 import com.example.bancamovil.model.CuentasBancaria;
 import com.example.bancamovil.model.Usuario;
@@ -34,6 +36,7 @@ public class FragmentShorts extends Fragment implements ShortsAdapter.OnTransfer
 
     private String CuentaOrigen = "";
     private String CuentaDestino = "";
+    private String Amount = "";
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
@@ -133,10 +136,10 @@ public class FragmentShorts extends Fragment implements ShortsAdapter.OnTransfer
             @Override
             public void onClick(View v) {
                 // Obtener el monto ingresado
-                String amount = amountEditText.getText().toString();
+                Amount = amountEditText.getText().toString();
 
                 // Validar el monto
-                if (amount.isEmpty() || Double.parseDouble(amount) <= 0) {
+                if (Amount.isEmpty() || Double.parseDouble(Amount) <= 0) {
                     // Mostrar advertencia: monto inválido
                     AlertDialogHelper.showAlertDialog(getActivity(), "Ingrese un monto válido", "Error");
                     return;
@@ -150,11 +153,13 @@ public class FragmentShorts extends Fragment implements ShortsAdapter.OnTransfer
                 }
 
                 // Realizar la transferencia
-                // Aquí puedes implementar la lógica para transferir el monto de la cuenta de origen a la cuenta de destino
-                // Puedes acceder a los valores de CuentaOrigen, CuentaDestino y monto directamente desde las variables de la clase
-
-                // Mostrar mensaje de éxito
-                AlertDialogHelper.showAlertDialog(getActivity(), "Transferencia realizada con éxito", "Success");
+                Utilities utilities = new Utilities(requireContext());
+                if (utilities.ConnectionTest()) {
+                    // Ejecutar la llamada a la API en un hilo separado utilizando AsyncTask
+                    //new APICallTask().execute(email, password);
+                    RequestTransfer task = new RequestTransfer(requireContext());
+                    task.execute(String.valueOf(usuario.getIdUsuario()), CuentaOrigen, CuentaDestino, Amount);
+                }
 
                 // Restablecer los controles a su estado original
                 amountEditText.setText("");
