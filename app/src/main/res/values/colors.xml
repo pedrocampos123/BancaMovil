@@ -11,5 +11,6 @@
     <color name="colorAccent">#ffffff</color>
     <color name="colorFocus">#4CAF50</color>
     <color name="colorLoginBottom">#009688</color>
+    <color name="colorCard">#DCDFDF</color>
 
 </resources>
