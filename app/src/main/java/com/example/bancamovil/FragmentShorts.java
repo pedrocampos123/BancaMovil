@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,6 +29,11 @@ public class FragmentShorts extends Fragment implements ShortsAdapter.OnTransfer
     private Usuario usuario;
     private TextView titleTextView;
     private EditText amountEditText;
+    private Spinner spinner;
+    private Spinner spinner2;
+
+    private String CuentaOrigen = "";
+    private String CuentaDestino = "";
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
@@ -60,26 +68,101 @@ public class FragmentShorts extends Fragment implements ShortsAdapter.OnTransfer
 
             // Configurar el RecyclerView y su adaptador
             MaterialCardView cardView = view.findViewById(R.id.cardView);
-            recyclerView = view.findViewById(R.id.recyclerView);
+            //recyclerView = view.findViewById(R.id.recyclerView);
             titleTextView = view.findViewById(R.id.titleTextView);
             amountEditText = view.findViewById(R.id.amountEditText);
+            spinner = view.findViewById(R.id.spinner);
+            TextView spinnerTitleTextView = view.findViewById(R.id.spinnerTitleTextView);
+            spinner2 = view.findViewById(R.id.spinner2);
+            TextView spinnerTitleTextView2 = view.findViewById(R.id.spinnerTitleTextView2);
 
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            // Establecer el título del Spinner
+            spinnerTitleTextView.setText("Seleccione Cuenta Origen");
+
+            /*recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             adapter = new ShortsAdapter(shortItemList, this); // Pasar la instancia del Fragment como OnTransferClickListener
-            recyclerView.setAdapter(adapter);
+            recyclerView.setAdapter(adapter);*/
+
+            // Configurar el Spinner
+            List<String> opciones = new ArrayList<>();
+            for (ShortItem shortItem : shortItemList) {
+                opciones.add(shortItem.getDescription());
+            }
+            List<String> opciones2 = new ArrayList<>();
+            for (ShortItem shortItem : shortItemList) {
+                opciones2.add(shortItem.getDescription());
+            }
+
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getActivity(), R.layout.custom_spinner_item, opciones);
+            spinnerAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
+            spinner.setAdapter(spinnerAdapter);
+
+            ArrayAdapter<String> spinnerAdapter2 = new ArrayAdapter<>(getActivity(), R.layout.custom_spinner_item, opciones);
+            spinnerAdapter2.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
+            spinner2.setAdapter(spinnerAdapter2);
+
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    CuentaOrigen = parent.getItemAtPosition(position).toString();
+                    // Realiza las acciones necesarias con el elemento seleccionado
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // No se seleccionó ningún elemento
+                }
+            });
+
+            spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    CuentaDestino = parent.getItemAtPosition(position).toString();
+                    // Realiza las acciones necesarias con el elemento seleccionado
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // No se seleccionó ningún elemento
+                }
+            });
         }
 
         Button transferButton = view.findViewById(R.id.transferButton);
         transferButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Implementa la lógica para manejar el evento de clic en el botón de transferencia aquí
-                // Puedes acceder al elemento seleccionado a través del adaptador o utilizando la posición
-                // Ejemplo: ShortItem selectedItem = adapter.getSelectedItem();
-                // Luego, puedes obtener los valores de CuentaOrigen, CuentaDestino y monto del objeto selectedItem
-                // y realizar las acciones necesarias, como mostrar un diálogo de confirmación o iniciar una nueva actividad.
+                // Obtener el monto ingresado
+                String amount = amountEditText.getText().toString();
+
+                // Validar el monto
+                if (amount.isEmpty() || Double.parseDouble(amount) <= 0) {
+                    // Mostrar advertencia: monto inválido
+                    AlertDialogHelper.showAlertDialog(getActivity(), "Ingrese un monto válido", "Error");
+                    return;
+                }
+
+                // Validar cuentas seleccionadas
+                if (CuentaOrigen.equals(CuentaDestino)) {
+                    // Mostrar advertencia: cuentas iguales
+                    AlertDialogHelper.showAlertDialog(getActivity(), "Las cuentas seleccionadas son iguales", "Error");
+                    return;
+                }
+
+                // Realizar la transferencia
+                // Aquí puedes implementar la lógica para transferir el monto de la cuenta de origen a la cuenta de destino
+                // Puedes acceder a los valores de CuentaOrigen, CuentaDestino y monto directamente desde las variables de la clase
+
+                // Mostrar mensaje de éxito
+                AlertDialogHelper.showAlertDialog(getActivity(), "Transferencia realizada con éxito", "Success");
+
+                // Restablecer los controles a su estado original
+                amountEditText.setText("");
+                spinner.setSelection(0);
+                spinner2.setSelection(0);
             }
         });
+
 
         return view;
     }
@@ -99,5 +182,6 @@ public class FragmentShorts extends Fragment implements ShortsAdapter.OnTransfer
         // Implementa la lógica para manejar el evento de clic en el botón de transferencia aquí
         // Puedes acceder a los valores de CuentaOrigen, CuentaDestino y monto desde el objeto shortItem
         // y realizar las acciones necesarias, como mostrar un diálogo de confirmación o iniciar una nueva actividad.
+        String s= "";
     }
 }

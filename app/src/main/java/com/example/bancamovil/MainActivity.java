@@ -1,6 +1,8 @@
 package com.example.bancamovil;
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,12 +48,30 @@ public class MainActivity extends AppCompatActivity {
                 String email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
 
-                // Ejecutar la llamada a la API en un hilo separado utilizando AsyncTask
-                //new APICallTask().execute(email, password);
-                Requests task = new Requests(MainActivity.this);
-                task.execute(email, password);
+                if (ConnectionTest()) {
+                    // Ejecutar la llamada a la API en un hilo separado utilizando AsyncTask
+                    //new APICallTask().execute(email, password);
+                    Requests task = new Requests(MainActivity.this);
+                    task.execute(email, password);
+                }
+                etEmail.setText("");
+                etPassword.setText("");
             }
         });
+    }
+
+    private Boolean ConnectionTest(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(MainActivity.this.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        boolean isConnected = networkInfo != null && networkInfo.isConnected();
+
+        if (isConnected) {
+            return true;
+        } else {
+            // No hay conexión a Internet, mostrar mensaje informativo
+            AlertDialogHelper.showAlertDialog(MainActivity.this, "No hay conexión a Internet", "Information");
+            return false;
+        }
     }
 
 }
