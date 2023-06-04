@@ -20,17 +20,41 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transferencias"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_gravity="center_horizontal" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textColor="@color/black"  />
+                android:textColor="@color/black" />
 
-            <Button
-                android:id="@+id/transferButton"
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/amountEditText"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Transfer" />
+                android:hint="Ingrese Monto"
+                android:background="@drawable/custom_border"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:inputType="numberDecimal"
+                android:gravity="center_vertical" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/transferButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Transferir"
+                style="@style/Button.Rounded" />
 
         </LinearLayout>
 

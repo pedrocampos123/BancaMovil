@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import okhttp3.MediaType;
@@ -23,20 +24,20 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class Requests extends AsyncTask<String, Void, String> {
-    private Context context;
+    private WeakReference<Context> contextRef;
     private String email = "";
     private String password = "";
 
     public Requests(Context context) {
-        this.context = context;
+        contextRef = new WeakReference<>(context);
     }
 
     @Override
     protected String doInBackground(String... params) {
         OkHttpClient client = new OkHttpClient();
 
-         email = params[0];
-         password = params[1];
+        email = params[0];
+        password = params[1];
 
         // Crear el cuerpo de la solicitud en formato JSON utilizando los valores ingresados por el usuario
         MediaType mediaType = MediaType.parse("application/json");
@@ -73,7 +74,8 @@ public class Requests extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        if (result != null) {
+        Context context = contextRef.get();
+        if (context != null && result != null) {
             try {
                 JSONObject jsonObject = new JSONObject(result);
                 int statusCode = jsonObject.getInt("statusCode");
@@ -144,5 +146,4 @@ public class Requests extends AsyncTask<String, Void, String> {
             }
         }
     }
-
 }

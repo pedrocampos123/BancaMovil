@@ -2,10 +2,8 @@ package com.example.bancamovil;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Handler;
-import android.view.View;
-import android.widget.Button;
+import android.os.HandlerThread;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,7 +47,9 @@ public class AlertDialogHelper {
         dialog.show();
 
         // Crear un Handler y un Runnable para cerrar el diálogo después de 2 segundos
-        Handler handler = new Handler();
+        HandlerThread handlerThread = new HandlerThread("MiHilo");
+        handlerThread.start();
+        Handler handler = new Handler(handlerThread.getLooper());
         Runnable runnable = new Runnable() {
             @Override
             public void run() {

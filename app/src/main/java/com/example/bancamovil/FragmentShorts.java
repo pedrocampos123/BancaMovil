@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +24,8 @@ public class FragmentShorts extends Fragment implements ShortsAdapter.OnTransfer
     private RecyclerView recyclerView;
     private ShortsAdapter adapter;
     private Usuario usuario;
+    private TextView titleTextView;
+    private EditText amountEditText;
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
@@ -58,6 +61,9 @@ public class FragmentShorts extends Fragment implements ShortsAdapter.OnTransfer
             // Configurar el RecyclerView y su adaptador
             MaterialCardView cardView = view.findViewById(R.id.cardView);
             recyclerView = view.findViewById(R.id.recyclerView);
+            titleTextView = view.findViewById(R.id.titleTextView);
+            amountEditText = view.findViewById(R.id.amountEditText);
+
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             adapter = new ShortsAdapter(shortItemList, this); // Pasar la instancia del Fragment como OnTransferClickListener
             recyclerView.setAdapter(adapter);
