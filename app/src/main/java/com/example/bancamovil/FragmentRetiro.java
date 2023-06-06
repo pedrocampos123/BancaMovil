@@ -13,10 +13,10 @@ import com.example.bancamovil.model.Usuario;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link FragmentLibrary#newInstance} factory method to
+ * Use the {@link FragmentRetiro#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentLibrary extends Fragment {
+public class FragmentRetiro extends Fragment {
 
     private RecyclerView recyclerView;
     private ShortsAdapter adapter;
@@ -35,7 +35,7 @@ public class FragmentLibrary extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public FragmentLibrary() {
+    public FragmentRetiro() {
         // Required empty public constructor
     }
 
@@ -45,11 +45,11 @@ public class FragmentLibrary extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentLibrary.
+     * @return A new instance of fragment FragmentRetiro.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentLibrary newInstance(String param1, String param2) {
-        FragmentLibrary fragment = new FragmentLibrary();
+    public static FragmentRetiro newInstance(String param1, String param2) {
+        FragmentRetiro fragment = new FragmentRetiro();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -70,6 +70,6 @@ public class FragmentLibrary extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_library, container, false);
+        return inflater.inflate(R.layout.fragment_retiro, container, false);
     }
 }

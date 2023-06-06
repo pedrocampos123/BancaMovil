@@ -45,10 +45,10 @@ public class DashboardActivity extends AppCompatActivity {
 
         // Asignar el objeto Usuario a los fragmentos que lo necesiten
         HomeFragment homeFragment = HomeFragment.newInstance(usuario);
-        FragmentShorts shortsFragment = FragmentShorts.newInstance(usuario);
-
-        FragmentSubscriptions subscriptionsFragment = new FragmentSubscriptions();
-        FragmentLibrary libraryFragment = new FragmentLibrary();
+        FragmentTransferencias transferenciasFragment = FragmentTransferencias.newInstance(usuario);
+        FragmentStatement estadocuentaFragment = new FragmentStatement();
+        FragmentDeposito depositoFragment = new FragmentDeposito();
+        FragmentRetiro retiroFragment = new FragmentRetiro();
 
         replaceFragment(homeFragment);
 
@@ -58,14 +58,17 @@ public class DashboardActivity extends AppCompatActivity {
                 case R.id.home:
                     replaceFragment(homeFragment);
                     break;
-                case R.id.shortcut:
-                    replaceFragment(shortsFragment);
+                case R.id.transfer:
+                    replaceFragment(transferenciasFragment);
                     break;
-                case R.id.subscriptions:
-                    replaceFragment(subscriptionsFragment);
+                case R.id.deposito:
+                    replaceFragment(depositoFragment);
                     break;
-                case R.id.library:
-                    replaceFragment(libraryFragment);
+                case R.id.retiro:
+                    replaceFragment(retiroFragment);
+                    break;
+                case R.id.estadocuenta:
+                    replaceFragment(estadocuentaFragment);
                     break;
             }
             return true;

@@ -12,11 +12,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bancamovil.Commom.Utilities;
-import com.example.bancamovil.R;
 import com.example.bancamovil.model.CuentasBancaria;
 import com.example.bancamovil.model.Usuario;
 import com.google.android.material.card.MaterialCardView;
@@ -24,7 +22,7 @@ import com.google.android.material.card.MaterialCardView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentShorts extends Fragment implements ShortsAdapter.OnTransferClickListener {
+public class FragmentTransferencias extends Fragment implements ShortsAdapter.OnTransferClickListener {
 
     private RecyclerView recyclerView;
     private ShortsAdapter adapter;
@@ -42,12 +40,12 @@ public class FragmentShorts extends Fragment implements ShortsAdapter.OnTransfer
         this.usuario = usuario;
     }
 
-    public FragmentShorts() {
+    public FragmentTransferencias() {
         // Required empty public constructor
     }
 
-    public static FragmentShorts newInstance(Usuario usuario) {
-        FragmentShorts fragment = new FragmentShorts();
+    public static FragmentTransferencias newInstance(Usuario usuario) {
+        FragmentTransferencias fragment = new FragmentTransferencias();
         Bundle args = new Bundle();
         args.putSerializable("usuario", usuario);
         fragment.setArguments(args);
@@ -56,7 +54,7 @@ public class FragmentShorts extends Fragment implements ShortsAdapter.OnTransfer
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_shorts, container, false);
+        View view = inflater.inflate(R.layout.fragment_transferencias, container, false);
 
         // Obtener el objeto Usuario del Bundle en el DashboardActivity
         Bundle args = getArguments();

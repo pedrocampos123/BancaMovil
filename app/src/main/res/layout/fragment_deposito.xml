@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/purple_200"
-    tools:context=".FragmentLibrary">
+    tools:context=".FragmentDeposito">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Library"
+        android:text="Subscriptions"
         android:gravity="center"
         android:textSize="30sp"
         android:textColor="@color/white"/>
