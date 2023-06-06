@@ -29,12 +29,14 @@ public class FragmentTransferencias extends Fragment implements ShortsAdapter.On
     private Usuario usuario;
     private TextView titleTextView;
     private EditText amountEditText;
+    private EditText transferDescripcionEditText;
     private Spinner spinner;
     private Spinner spinner2;
 
     private String CuentaOrigen = "";
     private String CuentaDestino = "";
     private String Amount = "";
+    private String Descripcion = "";
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
@@ -72,6 +74,7 @@ public class FragmentTransferencias extends Fragment implements ShortsAdapter.On
             //recyclerView = view.findViewById(R.id.recyclerView);
             titleTextView = view.findViewById(R.id.titleTextView);
             amountEditText = view.findViewById(R.id.amountEditText);
+            transferDescripcionEditText = view.findViewById(R.id.transferDescripcionEditText);
             spinner = view.findViewById(R.id.spinner);
             TextView spinnerTitleTextView = view.findViewById(R.id.spinnerTitleTextView);
             spinner2 = view.findViewById(R.id.spinner2);
@@ -135,6 +138,7 @@ public class FragmentTransferencias extends Fragment implements ShortsAdapter.On
             public void onClick(View v) {
                 // Obtener el monto ingresado
                 Amount = amountEditText.getText().toString();
+                Descripcion = String.valueOf(transferDescripcionEditText.getText());
 
                 // Validar el monto
                 if (Amount.isEmpty() || Double.parseDouble(Amount) <= 0) {
@@ -156,13 +160,14 @@ public class FragmentTransferencias extends Fragment implements ShortsAdapter.On
                     // Ejecutar la llamada a la API en un hilo separado utilizando AsyncTask
                     //new APICallTask().execute(email, password);
                     RequestTransfer task = new RequestTransfer(requireContext());
-                    task.execute(String.valueOf(usuario.getIdUsuario()), CuentaOrigen, CuentaDestino, Amount);
+                    task.execute(String.valueOf(usuario.getIdUsuario()), CuentaOrigen, CuentaDestino, Amount, Descripcion);
                 }
 
                 // Restablecer los controles a su estado original
                 amountEditText.setText("");
                 spinner.setSelection(0);
                 spinner2.setSelection(0);
+                transferDescripcionEditText.setText("");
             }
         });
 

@@ -29,6 +29,7 @@ public class RequestTransfer extends AsyncTask<String, Void, String> {
     private String cuentaOrigen;
     private String cuentaDestino;
     private double monto;
+    private String descripcion;
 
     public RequestTransfer(Context context) {
         contextRef = new WeakReference<>(context);
@@ -42,11 +43,13 @@ public class RequestTransfer extends AsyncTask<String, Void, String> {
         cuentaOrigen = params[1];
         cuentaDestino = params[2];
         monto = Double.parseDouble(params[3]);
+        descripcion = params[4];
 
         String url = "https://bancaapiapp.azurewebsites.net/ApiBanca/Transferencia?idUsuario=" + idUsuario +
                 "&CuentaOrigen=" + cuentaOrigen +
                 "&CuentaDestino=" + cuentaDestino +
-                "&monto=" + monto;
+                "&monto=" + monto +
+                "&descripcion=" + descripcion;
 
         Request request = new Request.Builder()
                 .url(url)

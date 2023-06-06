@@ -99,9 +99,22 @@
                 android:hint="Ingrese Monto"
                 android:background="@drawable/custom_border"
                 android:padding="12dp"
+                android:layout_marginBottom="10dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
                 android:inputType="numberDecimal"
+                android:gravity="center_vertical" />
+
+            <EditText
+                android:id="@+id/transferDescripcionEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Descripcion"
+                android:background="@drawable/custom_border"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:inputType="textMultiLine"
                 android:gravity="center_vertical" />
 
             <com.google.android.material.button.MaterialButton

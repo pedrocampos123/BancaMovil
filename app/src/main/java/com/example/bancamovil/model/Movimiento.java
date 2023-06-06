@@ -10,6 +10,8 @@ public class Movimiento implements Serializable {
     private Date FechaMovimiento;
     private double Monto;
     private String Descripcion;
+    private String CuentaOrigen;
+    private String CuentaDestino;
     private CuentasBancaria IdCuentaNavigation;
     private TiposMovimiento IdTipoMovimientoNavigation;
 
@@ -63,6 +65,22 @@ public class Movimiento implements Serializable {
 
     public CuentasBancaria getIdCuentaNavigation() {
         return IdCuentaNavigation;
+    }
+
+    public String getCuentaOrigen() {
+        return CuentaOrigen;
+    }
+
+    public void setCuentaOrigen(String cuentaOrigen) {
+        CuentaOrigen = cuentaOrigen;
+    }
+
+    public String getCuentaDestino() {
+        return CuentaDestino;
+    }
+
+    public void setCuentaDestino(String cuentaDestino) {
+        CuentaDestino = cuentaDestino;
     }
 
     public void setIdCuentaNavigation(CuentasBancaria idCuentaNavigation) {
