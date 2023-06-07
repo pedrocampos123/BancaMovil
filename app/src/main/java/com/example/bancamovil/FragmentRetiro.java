@@ -1,75 +1,191 @@
 package com.example.bancamovil;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.bancamovil.Commom.Utilities;
+import com.example.bancamovil.model.CuentasBancaria;
 import com.example.bancamovil.model.Usuario;
+import com.google.android.material.card.MaterialCardView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentRetiro#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class FragmentRetiro extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
+
+public class FragmentRetiro extends Fragment implements ShortsAdapter.OnTransferClickListener {
 
     private RecyclerView recyclerView;
     private ShortsAdapter adapter;
     private Usuario usuario;
+    private TextView titleTextView;
+    private EditText amountEditText;
+    private EditText descripcionEditText;
+    private Spinner spinner;
+
+    private String CuentaOrigen = "";
+    //private String CuentaDestino = "";
+    private String Amount = "";
+    private String Descripcion = "";
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     public FragmentRetiro() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentRetiro.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FragmentRetiro newInstance(String param1, String param2) {
+    public static FragmentRetiro newInstance(Usuario usuario) {
         FragmentRetiro fragment = new FragmentRetiro();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable("usuario", usuario);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_retiro, container, false);
+
+        // Obtener el objeto Usuario del Bundle en el DashboardActivity
+        Bundle args = getArguments();
+        if (args != null) {
+            usuario = (Usuario) args.getSerializable("usuario");
+
+            // Obtener la lista de cuentas bancarias del usuario
+            List<CuentasBancaria> cuentasBancarias = usuario.getCuentasBancaria();
+
+            // Crear la lista de elementos para el RecyclerView
+            List<ShortItem> shortItemList = createSampleShortItemList(cuentasBancarias);
+
+            // Configurar el RecyclerView y su adaptador
+            MaterialCardView cardView = view.findViewById(R.id.cardView);
+            //recyclerView = view.findViewById(R.id.recyclerView);
+            titleTextView = view.findViewById(R.id.titleTextView);
+            amountEditText = view.findViewById(R.id.amountEditText);
+            descripcionEditText = view.findViewById(R.id.descripcionEditText);
+            spinner = view.findViewById(R.id.spinner);
+            TextView spinnerTitleTextView = view.findViewById(R.id.spinnerTitleTextView);
+
+            // Establecer el título del Spinner
+            spinnerTitleTextView.setText("Seleccione Cuenta");
+
+            /*recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            adapter = new ShortsAdapter(shortItemList, this); // Pasar la instancia del Fragment como OnTransferClickListener
+            recyclerView.setAdapter(adapter);*/
+
+            // Configurar el Spinner
+            List<String> opciones = new ArrayList<>();
+            for (ShortItem shortItem : shortItemList) {
+                opciones.add(shortItem.getDescription());
+            }
+            List<String> opciones2 = new ArrayList<>();
+            for (ShortItem shortItem : shortItemList) {
+                opciones2.add(shortItem.getDescription());
+            }
+
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getActivity(), R.layout.custom_spinner_item, opciones);
+            spinnerAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
+            spinner.setAdapter(spinnerAdapter);
+
+            /*ArrayAdapter<String> spinnerAdapter2 = new ArrayAdapter<>(getActivity(), R.layout.custom_spinner_item, opciones);
+            spinnerAdapter2.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
+            spinner2.setAdapter(spinnerAdapter2);*/
+
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    CuentaOrigen = parent.getItemAtPosition(position).toString();
+                    // Realiza las acciones necesarias con el elemento seleccionado
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // No se seleccionó ningún elemento
+                }
+            });
+
+            /*spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    CuentaDestino = parent.getItemAtPosition(position).toString();
+                    // Realiza las acciones necesarias con el elemento seleccionado
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // No se seleccionó ningún elemento
+                }
+            });*/
         }
+
+        Button submitButton = view.findViewById(R.id.submitButton);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Obtener el monto ingresado
+                Amount = amountEditText.getText().toString();
+                Descripcion = String.valueOf(descripcionEditText.getText());
+
+                // Validar el monto
+                if (Amount.isEmpty() || Double.parseDouble(Amount) <= 0) {
+                    // Mostrar advertencia: monto inválido
+                    AlertDialogHelper.showAlertDialog(getActivity(), "Ingrese un monto válido", "Error");
+                    return;
+                }
+
+                // Validar cuentas seleccionadas
+                /*if (CuentaOrigen.equals(CuentaDestino)) {
+                    // Mostrar advertencia: cuentas iguales
+                    AlertDialogHelper.showAlertDialog(getActivity(), "Las cuentas seleccionadas son iguales", "Error");
+                    return;
+                }*/
+
+                // Realizar la transferencia
+                Utilities utilities = new Utilities(requireContext());
+                if (utilities.ConnectionTest()) {
+                    // Ejecutar la llamada a la API en un hilo separado utilizando AsyncTask
+                    //new APICallTask().execute(email, password);
+                    RequestRetiro task = new RequestRetiro(requireContext());
+                    task.execute(String.valueOf(usuario.getIdUsuario()), CuentaOrigen, Amount, Descripcion);
+                }
+
+                // Restablecer los controles a su estado original
+                amountEditText.setText("");
+                spinner.setSelection(0);
+                //spinner2.setSelection(0);
+                descripcionEditText.setText("");
+            }
+        });
+
+
+        return view;
+    }
+
+    private List<ShortItem> createSampleShortItemList(List<CuentasBancaria> cuentasBancarias) {
+        List<ShortItem> shortItemList = new ArrayList<>();
+        for (CuentasBancaria cuenta : cuentasBancarias) {
+            String title = cuenta.getDescripcion(); // Reemplaza 'getTitulo()' con el método adecuado para obtener el título de la cuenta
+            String description = cuenta.getNo_Cuenta(); // Reemplaza 'getDescripcion()' con el método adecuado para obtener la descripción de la cuenta
+            shortItemList.add(new ShortItem(title, description));
+        }
+        return shortItemList;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_retiro, container, false);
+    public void onTransferClick(ShortItem shortItem) {
+        // Implementa la lógica para manejar el evento de clic en el botón de transferencia aquí
+        // Puedes acceder a los valores de CuentaOrigen, CuentaDestino y monto desde el objeto shortItem
+        // y realizar las acciones necesarias, como mostrar un diálogo de confirmación o iniciar una nueva actividad.
+        String s= "";
     }
 }

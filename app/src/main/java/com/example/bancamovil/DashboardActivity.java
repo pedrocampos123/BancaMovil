@@ -46,9 +46,9 @@ public class DashboardActivity extends AppCompatActivity {
         // Asignar el objeto Usuario a los fragmentos que lo necesiten
         HomeFragment homeFragment = HomeFragment.newInstance(usuario);
         FragmentTransferencias transferenciasFragment = FragmentTransferencias.newInstance(usuario);
+        FragmentDeposito depositoFragment = FragmentDeposito.newInstance(usuario);
+        FragmentRetiro retiroFragment = FragmentRetiro.newInstance(usuario);
         FragmentStatement estadocuentaFragment = new FragmentStatement();
-        FragmentDeposito depositoFragment = new FragmentDeposito();
-        FragmentRetiro retiroFragment = new FragmentRetiro();
 
         replaceFragment(homeFragment);
 
