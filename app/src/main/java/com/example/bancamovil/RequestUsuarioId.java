@@ -35,7 +35,7 @@ public class RequestUsuarioId extends AsyncTask<String, Void, String> {
 
         idUsuario = Integer.parseInt(params[0]);
 
-        String url = "https://bancaapiapp.azurewebsites.net/ApiBanca/usuarios/" + idUsuario;
+        String url = "https://bancaapi.azurewebsites.net/ApiBanca/usuarios/" + idUsuario;
 
         Request request = new Request.Builder()
                 .url(url)

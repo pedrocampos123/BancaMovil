@@ -45,7 +45,7 @@ public class RequestTransfer extends AsyncTask<String, Void, String> {
         monto = Double.parseDouble(params[3]);
         descripcion = params[4];
 
-        String url = "https://bancaapiapp.azurewebsites.net/ApiBanca/Transferencia?idUsuario=" + idUsuario +
+        String url = "https://bancaapi.azurewebsites.net/ApiBanca/Transferencia?idUsuario=" + idUsuario +
                 "&CuentaOrigen=" + cuentaOrigen +
                 "&CuentaDestino=" + cuentaDestino +
                 "&monto=" + monto +

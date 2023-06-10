@@ -45,7 +45,7 @@ public class RequestRetiro extends AsyncTask<String, Void, String> {
         monto = Double.parseDouble(params[2]);
         descripcion = params[3];
 
-        String url = "https://bancaapiapp.azurewebsites.net/ApiBanca/Retiro?idUsuario=" + idUsuario +
+        String url = "https://bancaapi.azurewebsites.net/ApiBanca/Retiro?idUsuario=" + idUsuario +
                 "&CuentaOrigen=" + cuentaOrigen +
                 "&monto=" + monto +
                 "&descripcion=" + descripcion;
