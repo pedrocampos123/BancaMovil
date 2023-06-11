@@ -110,6 +110,8 @@ public class DashboardActivity extends AppCompatActivity {
         FragmentRetiro retiroFragment = FragmentRetiro.newInstance(usuario);
         FragmentStatement estadocuentaFragment = FragmentStatement.newInstance(usuario, movimientos);
 
+        movimientos = null;
+
         if (j > 0) {
             replaceFragment(estadocuentaFragment);
             binding.bottomNavigationView.getMenu().findItem(R.id.estadocuenta).setChecked(true);

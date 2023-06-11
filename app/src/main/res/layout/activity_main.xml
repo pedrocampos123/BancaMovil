@@ -58,6 +58,7 @@
             android:textColorHint="@color/hint_color"
             android:textColor="@color/black"
             style="@style/TextInputEditTextStyle"
+            android:textSize="16sp"
             android:padding="10dp"
             android:layout_marginBottom="16dp"
             android:drawableStart="@drawable/user"
@@ -71,9 +72,10 @@
             android:inputType="textPassword"
             android:textColorHint="@color/hint_color"
             android:textColor="@color/black"
+            android:textSize="16sp"
             style="@style/TextInputEditTextStyle"
             android:padding="10dp"
-            android:drawableStart="@drawable/user"
+            android:drawableStart="@drawable/password"
             android:drawablePadding="8dp" />
 
         <Button
