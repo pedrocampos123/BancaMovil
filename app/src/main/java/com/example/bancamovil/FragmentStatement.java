@@ -1,9 +1,13 @@
 package com.example.bancamovil;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.text.Spannable;
@@ -122,10 +126,44 @@ public class FragmentStatement extends Fragment implements ShortsAdapter.OnTrans
 
             // Crear el ScrollView
             ScrollView scrollView = new ScrollView(requireContext());
+            scrollView.setNestedScrollingEnabled(true);
 
             // Crear un contenedor para el título y el MovimientosCardView
             LinearLayout containers = new LinearLayout(requireContext());
             containers.setOrientation(LinearLayout.VERTICAL);
+
+            // Crear el contenedor para los controles en la misma línea
+            LinearLayout infoLayout = new LinearLayout(requireContext());
+            infoLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+            // TextView a la izquierda
+            TextView infoTextViewLeft = new TextView(requireContext());
+            infoTextViewLeft.setText(leftTexto);
+            infoTextViewLeft.setTextColor(getResources().getColor(android.R.color.black));
+            infoTextViewLeft.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+            infoTextViewLeft.setPadding(getResources().getDimensionPixelSize(R.dimen.padding_left_negative), 10, 0, 0);
+            infoTextViewLeft.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            infoTextViewLeft.setTypeface(null, Typeface.BOLD);
+            infoTextViewLeft.setBackgroundResource(R.color.white);
+
+            // TextView a la derecha
+            TextView infoTextViewRight = new TextView(requireContext());
+            infoTextViewRight.setText(rightText);
+            infoTextViewRight.setTextColor(getResources().getColor(android.R.color.black));
+            infoTextViewRight.setGravity(Gravity.END);
+            infoTextViewRight.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            infoTextViewRight.setPadding(0, 10, getResources().getDimensionPixelSize(R.dimen.padding_right_positive), 0);
+            infoTextViewRight.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            infoTextViewRight.setTypeface(null, Typeface.BOLD);
+            infoTextViewRight.setBackgroundResource(R.color.white);
+
+            // Agregar los TextViews al contenedor
+            infoLayout.addView(infoTextViewLeft);
+            infoLayout.addView(infoTextViewRight);
+
+            // Agregar el contenedor al 'containers'
+            containers.addView(infoLayout);
+
 
             for (int i = 0; i < movimientos.size(); i++) {
                 Movimiento movimiento = movimientos.get(i);
@@ -144,62 +182,56 @@ public class FragmentStatement extends Fragment implements ShortsAdapter.OnTrans
                 if (movimiento.getMonto() < 0) {
                     amountTextView.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
                     amountTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+                    amountTextView.setPadding(getResources().getDimensionPixelSize(R.dimen.padding_left_negative), 0, 0, 0);
+
                     descriptionTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                     descriptionTextView.setTextColor(getResources().getColor(android.R.color.black));
-                    cardView.setPadding(getResources().getDimensionPixelSize(R.dimen.padding_left_negative), 0, 0, 0);
+                    descriptionTextView.setPadding(getResources().getDimensionPixelSize(R.dimen.padding_left_negative), 0, 0, 0);
                 } else {
                     amountTextView.setTextColor(getResources().getColor(android.R.color.black));
                     amountTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
                     amountTextView.setTypeface(null, Typeface.BOLD);
+                    amountTextView.setPadding(0, 0, getResources().getDimensionPixelSize(R.dimen.padding_right_positive), 0);
+
                     descriptionTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
                     descriptionTextView.setTextColor(getResources().getColor(android.R.color.black));
-                    cardView.setPadding(0, 0, getResources().getDimensionPixelSize(R.dimen.padding_right_positive), 0);
+                    descriptionTextView.setPadding(0, 0, getResources().getDimensionPixelSize(R.dimen.padding_right_positive), 0);
                 }
 
                 // Remover cualquier fondo previo
                 cardView.setBackgroundResource(0);
 
                 // Aplicar border radius solo al primer y último registro
-                if (i == 0) {
+                /*if (i == 0) {
                     // Primer registro
-                    cardView.setBackgroundResource(R.drawable.card_radius_top);
-                    cardView.setPadding(0, 10, getResources().getDimensionPixelSize(R.dimen.padding_right_positive), 0);
+                    cardView.setBackgroundResource(R.drawable.card_radius_none);
+                    //cardView.setPadding(0, 10, getResources().getDimensionPixelSize(R.dimen.padding_right_positive), 0);
 
-                    // Crear el contenedor para los controles en la misma línea
-                    LinearLayout infoLayout = new LinearLayout(requireContext());
-                    infoLayout.setOrientation(LinearLayout.HORIZONTAL);
 
-                    // TextView a la izquierda
-                    TextView infoTextViewLeft = new TextView(requireContext());
-                    infoTextViewLeft.setText(leftTexto);
-                    infoTextViewLeft.setTextColor(getResources().getColor(android.R.color.black));
-                    infoTextViewLeft.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-                    infoTextViewLeft.setPadding(getResources().getDimensionPixelSize(R.dimen.padding_left_negative), 10, 0, 0);
-                    infoTextViewLeft.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-                    infoTextViewLeft.setTypeface(null, Typeface.BOLD);
-
-                    // TextView a la derecha
-                    TextView infoTextViewRight = new TextView(requireContext());
-                    infoTextViewRight.setText(rightText);
-                    infoTextViewRight.setTextColor(getResources().getColor(android.R.color.black));
-                    infoTextViewRight.setGravity(Gravity.END);
-                    infoTextViewRight.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                    infoTextViewRight.setPadding(0, 10, getResources().getDimensionPixelSize(R.dimen.padding_right_positive), 0);
-                    infoTextViewRight.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-                    infoTextViewRight.setTypeface(null, Typeface.BOLD);
-
-                    // Agregar los TextViews al contenedor
-                    infoLayout.addView(infoTextViewLeft);
-                    infoLayout.addView(infoTextViewRight);
-
-                    // Agregar el contenedor al 'containers'
-                    containers.addView(infoLayout);
                 } else if (i == movimientos.size() - 1) {
                     // Último registro
                     cardView.setBackgroundResource(R.drawable.card_radius_bottom);
                 }
+                else{
+
+                }*/
+                cardView.setBackgroundResource(R.drawable.card_radius_none);
                 containers.addView(cardView);
             }
+
+            // Configurar el estilo de la barra de desplazamiento
+            // Crear un Drawable a partir del archivo XML
+            Drawable customBackground = ContextCompat.getDrawable(requireContext(), R.drawable.custom_scroll_background);
+
+            // Establecer el Drawable como fondo del ScrollView
+            scrollView.setBackground(customBackground);
+
+            // Configurar las propiedades del ScrollView
+            scrollView.setNestedScrollingEnabled(true);
+            scrollView.setVerticalScrollBarEnabled(true);
+            scrollView.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
+            scrollView.setScrollbarFadingEnabled(false);
+
 
             // Agregar el contenedor al ScrollView
             scrollView.addView(containers);
@@ -207,6 +239,7 @@ public class FragmentStatement extends Fragment implements ShortsAdapter.OnTrans
             // Agregar el ScrollView al contenedor principal
             cardContainer.addView(scrollView);
         }
+
 
         Button submitButton = view.findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
