@@ -122,7 +122,6 @@ public class RequestUsuarioId extends AsyncTask<String, Void, String> {
                         }
                     }, 0);
                 }else{
-
                     // Iniciar la actividad DashboardActivity en el contexto de MainActivity
                     context.startActivity(intent);
                 }

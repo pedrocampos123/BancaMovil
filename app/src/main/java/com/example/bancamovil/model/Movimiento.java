@@ -15,6 +15,19 @@ public class Movimiento implements Serializable {
     private CuentasBancaria IdCuentaNavigation;
     private TiposMovimiento IdTipoMovimientoNavigation;
 
+    public Movimiento(int idMovimiento, Integer idCuenta, Integer idTipoMovimiento, Date fechaMovimiento, double monto, String descripcion, String cuentaOrigen, String cuentaDestino, CuentasBancaria idCuentaNavigation, TiposMovimiento idTipoMovimientoNavigation) {
+        IdMovimiento = idMovimiento;
+        IdCuenta = idCuenta;
+        IdTipoMovimiento = idTipoMovimiento;
+        FechaMovimiento = fechaMovimiento;
+        Monto = monto;
+        Descripcion = descripcion;
+        CuentaOrigen = cuentaOrigen;
+        CuentaDestino = cuentaDestino;
+        IdCuentaNavigation = idCuentaNavigation;
+        IdTipoMovimientoNavigation = idTipoMovimientoNavigation;
+    }
+
     public int getIdMovimiento() {
         return IdMovimiento;
     }
