@@ -45,7 +45,7 @@ public class RequestDeposito extends AsyncTask<String, Void, String> {
         monto = Double.parseDouble(params[2]);
         descripcion = params[3];
 
-        String url = "https://bancaapiapp.azurewebsites.net/ApiBanca/Deposito?idUsuario=" + idUsuario +
+        String url = "https://bancaapi.azurewebsites.net/ApiBanca/Deposito?idUsuario=" + idUsuario +
                 "&CuentaDestino=" + cuentaDestino +
                 "&monto=" + monto +
                 "&descripcion=" + descripcion;

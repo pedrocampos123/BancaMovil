@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -68,8 +69,8 @@ public class FragmentStatement extends Fragment implements ShortsAdapter.OnTrans
 
         //LinearLayout cardContainer = view.findViewById(R.id.cardContainer);
 
-        String leftTexto = "Credito";
-        String rightText = "Abono";
+        String leftTexto = "Salidas";
+        String rightText = "Entradas";
 
         Bundle args = getArguments();
         if (args != null) {
@@ -118,6 +119,9 @@ public class FragmentStatement extends Fragment implements ShortsAdapter.OnTrans
 
         if (movimientos != null && !movimientos.isEmpty()) {
             LinearLayout cardContainer = view.findViewById(R.id.cardContainer);
+
+            // Crear el ScrollView
+            ScrollView scrollView = new ScrollView(requireContext());
 
             // Crear un contenedor para el título y el MovimientosCardView
             LinearLayout containers = new LinearLayout(requireContext());
@@ -194,13 +198,14 @@ public class FragmentStatement extends Fragment implements ShortsAdapter.OnTrans
                     // Último registro
                     cardView.setBackgroundResource(R.drawable.card_radius_bottom);
                 }
-
-
-
                 containers.addView(cardView);
             }
 
-            cardContainer.addView(containers);
+            // Agregar el contenedor al ScrollView
+            scrollView.addView(containers);
+
+            // Agregar el ScrollView al contenedor principal
+            cardContainer.addView(scrollView);
         }
 
         Button submitButton = view.findViewById(R.id.submitButton);
