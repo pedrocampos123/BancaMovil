@@ -3,6 +3,7 @@ package com.example.bancamovil;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.text.Spannable;
@@ -10,6 +11,7 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,7 +66,10 @@ public class FragmentStatement extends Fragment implements ShortsAdapter.OnTrans
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_statement, container, false);
 
-        LinearLayout cardContainer = view.findViewById(R.id.cardContainer);
+        //LinearLayout cardContainer = view.findViewById(R.id.cardContainer);
+
+        String leftTexto = "Credito";
+        String rightText = "Abono";
 
         Bundle args = getArguments();
         if (args != null) {
@@ -108,52 +113,27 @@ public class FragmentStatement extends Fragment implements ShortsAdapter.OnTrans
                     // No se seleccionó ningún elemento
                 }
             });
-            Button submitButton = view.findViewById(R.id.submitButton);
-            submitButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    // Realizar la transferencia
-                    Utilities utilities = new Utilities(requireContext());
-                    if (utilities.ConnectionTest()) {
-                        // Ejecutar la llamada a la API en un hilo separado utilizando AsyncTask
-                        //new APICallTask().execute(email, password);
-                        RequestEstadoDeCuenta task = new RequestEstadoDeCuenta(requireContext());
-                        task.execute(CuentaOrigen);
-                    }
-
-                    // Restablecer los controles a su estado original
-                    //spinner.setSelection(0);
-                }
-            });
         }
 
-        String texto = "  Retiro    Abono  ";
-        int i = 0;
+
         if (movimientos != null && !movimientos.isEmpty()) {
-            for (Movimiento movimiento : movimientos) {
-                View cardView = inflater.inflate(R.layout.item_statement, cardContainer, false);
-                TextView accountTextView = cardView.findViewById(R.id.accountTextView);
+            LinearLayout cardContainer = view.findViewById(R.id.cardContainer);
+
+            // Crear un contenedor para el título y el MovimientosCardView
+            LinearLayout containers = new LinearLayout(requireContext());
+            containers.setOrientation(LinearLayout.VERTICAL);
+
+            for (int i = 0; i < movimientos.size(); i++) {
+                Movimiento movimiento = movimientos.get(i);
+
+                // Inflar el layout de la tarjeta
+                View cardView = inflater.inflate(R.layout.item_statement, containers, false);
+
+                // Obtener referencias a los TextViews dentro de la tarjeta
                 TextView descriptionTextView = cardView.findViewById(R.id.descriptionTextView);
                 TextView amountTextView = cardView.findViewById(R.id.amountTextView);
 
-                if (i == 0) {
-                    SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto);
-
-                    // Establecer estilo para "Retiro" (izquierda)
-                    StyleSpan styleSpanLeft = new StyleSpan(Typeface.BOLD);
-                    spannableStringBuilder.setSpan(styleSpanLeft, 2, 8, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                    // Establecer estilo para "Abono" (derecha)
-                    StyleSpan styleSpanRight = new StyleSpan(Typeface.ITALIC);
-                    spannableStringBuilder.setSpan(styleSpanRight, 14, 19, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                    accountTextView.setText(spannableStringBuilder);
-                    accountTextView.setGravity(Gravity.CENTER);
-                    accountTextView.setTextColor(getResources().getColor(android.R.color.black));
-                    i++;
-                }
-
+                // Configurar los valores de los TextViews
                 descriptionTextView.setText(movimiento.getDescripcion());
                 amountTextView.setText(String.format("$%.2f", movimiento.getMonto()));
 
@@ -162,21 +142,66 @@ public class FragmentStatement extends Fragment implements ShortsAdapter.OnTrans
                     amountTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                     descriptionTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                     descriptionTextView.setTextColor(getResources().getColor(android.R.color.black));
+                    cardView.setPadding(getResources().getDimensionPixelSize(R.dimen.padding_left_negative), 0, 0, 0);
                 } else {
                     amountTextView.setTextColor(getResources().getColor(android.R.color.black));
                     amountTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
                     amountTextView.setTypeface(null, Typeface.BOLD);
                     descriptionTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
                     descriptionTextView.setTextColor(getResources().getColor(android.R.color.black));
+                    cardView.setPadding(0, 0, getResources().getDimensionPixelSize(R.dimen.padding_right_positive), 0);
                 }
 
-                cardContainer.addView(cardView);
+                // Remover cualquier fondo previo
+                cardView.setBackgroundResource(0);
+
+                // Aplicar border radius solo al primer y último registro
+                if (i == 0) {
+                    // Primer registro
+                    cardView.setBackgroundResource(R.drawable.card_radius_top);
+                    cardView.setPadding(0, 10, getResources().getDimensionPixelSize(R.dimen.padding_right_positive), 0);
+
+                    // Crear el contenedor para los controles en la misma línea
+                    LinearLayout infoLayout = new LinearLayout(requireContext());
+                    infoLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                    // TextView a la izquierda
+                    TextView infoTextViewLeft = new TextView(requireContext());
+                    infoTextViewLeft.setText(leftTexto);
+                    infoTextViewLeft.setTextColor(getResources().getColor(android.R.color.black));
+                    infoTextViewLeft.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+                    infoTextViewLeft.setPadding(getResources().getDimensionPixelSize(R.dimen.padding_left_negative), 10, 0, 0);
+                    infoTextViewLeft.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                    infoTextViewLeft.setTypeface(null, Typeface.BOLD);
+
+                    // TextView a la derecha
+                    TextView infoTextViewRight = new TextView(requireContext());
+                    infoTextViewRight.setText(rightText);
+                    infoTextViewRight.setTextColor(getResources().getColor(android.R.color.black));
+                    infoTextViewRight.setGravity(Gravity.END);
+                    infoTextViewRight.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    infoTextViewRight.setPadding(0, 10, getResources().getDimensionPixelSize(R.dimen.padding_right_positive), 0);
+                    infoTextViewRight.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                    infoTextViewRight.setTypeface(null, Typeface.BOLD);
+
+                    // Agregar los TextViews al contenedor
+                    infoLayout.addView(infoTextViewLeft);
+                    infoLayout.addView(infoTextViewRight);
+
+                    // Agregar el contenedor al 'containers'
+                    containers.addView(infoLayout);
+                } else if (i == movimientos.size() - 1) {
+                    // Último registro
+                    cardView.setBackgroundResource(R.drawable.card_radius_bottom);
+                }
+
+
+
+                containers.addView(cardView);
             }
-            i = 0;
+
+            cardContainer.addView(containers);
         }
-
-
-
 
         Button submitButton = view.findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -197,7 +222,6 @@ public class FragmentStatement extends Fragment implements ShortsAdapter.OnTrans
                 //spinner2.setSelection(0);
             }
         });
-
 
         return view;
     }
