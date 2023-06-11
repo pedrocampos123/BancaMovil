@@ -1,29 +1,53 @@
-<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-     <ImageView
-    android:layout_width="match_parent"
-    android:layout_height="300dp"
-    android:src="@drawable/logo"
-    android:scaleType="centerCrop" />-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:background="@drawable/background_droplet"  />
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="200dp"
-            android:layout_height="180dp"
+            android:layout_width="250dp"
+            android:layout_height="160dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="0dp"
             android:scaleType="fitXY"
-            android:src="@drawable/sivarbankinv"
+            android:src="@drawable/sivarbankinvajuste"
             style="@style/ShapeableImageViewStyle" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/first_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="¡Bienvenido(a) a SivarBank!"
+                android:textSize="24sp"
+                android:textColor="@color/white"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Inicia Sesión"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                android:layout_below="@id/first_title" />
+
+        </FrameLayout>
 
         <EditText
             android:id="@+id/et_email"
@@ -35,7 +59,9 @@
             android:textColor="@color/black"
             style="@style/TextInputEditTextStyle"
             android:padding="10dp"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:drawableStart="@drawable/user"
+            android:drawablePadding="8dp"/>
 
         <EditText
             android:id="@+id/et_password"
@@ -46,17 +72,21 @@
             android:textColorHint="@color/hint_color"
             android:textColor="@color/black"
             style="@style/TextInputEditTextStyle"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:drawableStart="@drawable/user"
+            android:drawablePadding="8dp" />
 
         <Button
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Log in"
+            android:text="Ingresar"
+            android:textSize="16sp"
+            android:textStyle="bold"
             android:textColor="@color/white"
             style="@style/Button.Rounded" />
 
     </LinearLayout>
 
-<!--</FrameLayout>-->
+</FrameLayout>
