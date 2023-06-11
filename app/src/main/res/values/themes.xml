@@ -1,16 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-<!-- Base application theme. -->
-<style name="Theme.BottomNavigation" parent="Theme.MaterialComponents.DayNight.NoActionBar"> <!-- Aqui cambiar el NoActionBar para colocar el nombre de la app -->
-    <!-- Primary brand color. -->
-    <item name="colorPrimary">@color/colorFocus</item>
-    <item name="colorPrimaryVariant">@color/purple_200</item>
-    <item name="colorOnPrimary">@color/white</item>
-    <!-- Secondary brand color. -->
-    <item name="colorSecondary">@color/teal_200</item>
-    <item name="colorSecondaryVariant">@color/teal_700</item>
-    <item name="colorOnSecondary">@color/black</item>
-    <!-- Status bar color. -->
-    <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-    <!-- Customize your theme here. -->
-</style>
+    <!-- Base application theme. -->
+    <style name="Theme.BancaMovil" parent="Theme.MaterialComponents.DayNight.NoActionBar"> <!-- Aqui cambiar el NoActionBar para colocar el nombre de la app -->
+        <item name="colorPrimary">@color/colorFocus</item>
+        <item name="colorPrimaryVariant">@color/transparent</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/transparent</item>
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/teal_700</item>
+    </style>
 </resources>
