@@ -28,6 +28,10 @@ public class Movimiento implements Serializable {
         IdTipoMovimientoNavigation = idTipoMovimientoNavigation;
     }
 
+    public Movimiento() {
+
+    }
+
     public int getIdMovimiento() {
         return IdMovimiento;
     }

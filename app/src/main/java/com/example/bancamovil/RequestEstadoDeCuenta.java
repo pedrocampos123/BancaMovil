@@ -32,6 +32,7 @@ import okhttp3.Response;
 public class RequestEstadoDeCuenta extends AsyncTask<String, Void, String> {
     private WeakReference<Context> contextRef;
     private String cuenta;
+    private int idUsuario;
 
     public RequestEstadoDeCuenta(Context context) {
         contextRef = new WeakReference<>(context);
@@ -42,6 +43,7 @@ public class RequestEstadoDeCuenta extends AsyncTask<String, Void, String> {
         OkHttpClient client = new OkHttpClient();
 
         cuenta = params[0];
+        idUsuario = Integer.parseInt(params[1]);
 
         String url = "https://bancaapi.azurewebsites.net/ApiBanca/MovimientosCuentaBancaria?cuenta=" + cuenta;
 
@@ -74,115 +76,85 @@ public class RequestEstadoDeCuenta extends AsyncTask<String, Void, String> {
                 int statusCode = jsonObject.getInt("statusCode");
                 String data = jsonObject.getString("data");
                 String message = jsonObject.getString("message");
+                ArrayList<Movimiento> movimientos = new ArrayList<>();
+                // Procesar los movimientos
+                ArrayList<Movimiento> movimientosExtras = new ArrayList<>();
 
-                // Crear un intent para la actividad DashboardActivity
-                Intent intent = new Intent(context, DashboardActivity.class);
+                //AlertDialogHelper.showAlertDialog((Activity) context, message, statusCode == 200 ? "Success" : "Error");
 
                 if (statusCode == 200) {
-                    // Retrasar la ejecución del Intent durante 3 segundos (3000 milisegundos)
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            // Serializar la respuesta JSON y agregarla como extra al intent
                             try {
-                                // Crear un objeto JSON a partir de la respuesta
                                 JSONArray cuentaJsonArray = new JSONArray(data);
-                                CuentasBancaria cuentasExtras = new CuentasBancaria();
+                                JSONObject cuentaJsonObject = cuentaJsonArray.getJSONObject(0);
+                                JSONArray movimientosJsonArray = cuentaJsonObject.getJSONArray("Movimientos");
 
-                                if (cuentaJsonArray.length() > 0) {
-                                    JSONObject cuentaJsonObject = cuentaJsonArray.getJSONObject(0);
 
-                                    // Obtener los valores para CuentasBancaria
-                                    int idCuenta = cuentaJsonObject.getInt("IdCuenta");
-                                    int idUsuarioCuenta = cuentaJsonObject.getInt("IdUsuario");
-                                    double saldo = cuentaJsonObject.getDouble("Saldo");
-                                    String noCuenta = cuentaJsonObject.getString("No_Cuenta");
-                                    String descripcion = cuentaJsonObject.getString("Descripcion");
+                                for (int i = 0; i < movimientosJsonArray.length(); i++) {
+                                    JSONObject movimientoJson = movimientosJsonArray.getJSONObject(i);
+                                    int idMovimiento = movimientoJson.getInt("IdMovimiento");
+                                    int idCuenta = movimientoJson.getInt("IdCuenta");
+                                    String descripcion = movimientoJson.getString("Descripcion");
+                                    double monto = movimientoJson.getDouble("Monto");
+                                    String fecha = movimientoJson.getString("FechaMovimiento");
 
-                                    // Crear una instancia de CuentasBancaria
-                                    CuentasBancaria cuentasBancaria = new CuentasBancaria();
-                                    cuentasBancaria.setIdCuenta(idCuenta);
-                                    cuentasBancaria.setIdUsuario(idUsuarioCuenta);
-                                    cuentasBancaria.setSaldo(saldo);
-                                    cuentasBancaria.setNo_Cuenta(noCuenta);
-                                    cuentasBancaria.setDescripcion(descripcion);
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+                                    Date fechaMovimiento = dateFormat.parse(fecha);
 
-                                    // Obtener los valores para Usuario
-                                    JSONObject usuarioObj = cuentaJsonObject.getJSONObject("IdUsuarioNavigation");
-                                    int idUsuario = usuarioObj.getInt("IdUsuario");
-                                    String nombre = usuarioObj.getString("Nombre");
-                                    String apellido = usuarioObj.getString("Apellido");
-                                    String correoElectronico = usuarioObj.getString("CorreoElectronico");
-                                    String contrasena = usuarioObj.getString("Contrasena");
+                                    Movimiento movimiento = new Movimiento();
+                                    movimiento.setIdMovimiento(idMovimiento);
+                                    movimiento.setIdCuenta(idCuenta);
+                                    movimiento.setDescripcion(descripcion);
+                                    movimiento.setMonto(monto);
+                                    movimiento.setFechaMovimiento(fechaMovimiento);
 
-                                    Usuario usuario = new Usuario();
-                                    usuario.setIdUsuario(idUsuario);
-                                    usuario.setNombre(nombre);
-                                    usuario.setApellido(apellido);
-                                    usuario.setCorreoElectronico(correoElectronico);
-                                    usuario.setContrasena(contrasena);
-                                    //usuario.getCuentasBancaria().add(cuentasBancaria);
-
-                                    // Obtener el primer objeto de la cuenta (asumimos que solo hay una cuenta)
-                                    JSONObject cuentaJson = cuentaJsonArray.getJSONObject(0);
-
-                                    // Obtener el saldo de la cuenta
-                                    //double saldo = cuentaJsonArray.getDouble("Saldo");
-
-                                    // Obtener el arreglo de movimientos
-                                    JSONArray movimientosJsonArray = cuentaJson.getJSONArray("Movimientos");
-
-                                    // Crear una lista para almacenar los movimientos
-                                    ArrayList<Movimiento> movimientos = new ArrayList<>();
-
-                                    // Iterar sobre los movimientos y crear los objetos Movimiento correspondientes
-                                    for (int i = 0; i < movimientosJsonArray.length(); i++) {
-                                        JSONObject movimientoJson = movimientosJsonArray.getJSONObject(i);
-
-                                        int idMovimiento = movimientoJson.getInt("IdMovimiento");
-                                        int idCuenta2 = movimientoJson.getInt("IdCuenta");
-                                        int idTipoMovimiento = movimientoJson.getInt("IdTipoMovimiento");
-                                        String fechaMovimientoStr = movimientoJson.getString("FechaMovimiento");
-                                        double monto = movimientoJson.getDouble("Monto");
-                                        String descripcion2 = movimientoJson.getString("Descripcion");
-                                        String cuentaOrigen = movimientoJson.getString("CuentaOrigen");
-                                        String cuentaDestino = movimientoJson.getString("CuentaDestino");
-
-                                        // Convertir la fecha de movimiento a objeto Date
-                                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault());
-                                        Date fechaMovimiento = dateFormat.parse(fechaMovimientoStr);
-
-                                        // Crear un objeto Movimiento
-                                        Movimiento movimiento = new Movimiento(idMovimiento, idCuenta2, idTipoMovimiento, fechaMovimiento, monto, descripcion2, cuentaOrigen, cuentaDestino, null, null);
-
-                                        // Agregar el movimiento a la lista
-                                        movimientos.add(movimiento);
-                                    }
-
-                                    // Agregar las listas de movimientos y cuentas bancarias como extras al intent
-                                    intent.putExtra("movimientosExtras", movimientos);
-                                    intent.putExtra("Cuenta", cuentasBancaria);
-                                    intent.putExtra("usuario", usuario);
+                                    movimientosExtras.add(movimiento);
                                 }
-
                             } catch (JSONException e) {
-                                e.printStackTrace();
+                                throw new RuntimeException(e);
                             } catch (ParseException e) {
                                 throw new RuntimeException(e);
                             }
 
-                            // Iniciar la actividad DashboardActivity en el contexto de MainActivity
-                            context.startActivity(intent);
+
+                            String movimientosJsonString = null;
+                            try {
+                                movimientosJsonString = movimientosToJsonString(movimientosExtras);
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                            // Iniciar la tarea RequestUsuarioStatementId con la cadena JSON como parámetro
+                            RequestUsuarioStatementId task = new RequestUsuarioStatementId(context);
+                            task.execute(String.valueOf(idUsuario), movimientosJsonString);
                         }
                     }, 0);
-                } else {
-                    // Iniciar la actividad DashboardActivity en el contexto de MainActivity
-                    context.startActivity(intent);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
+
+    // Método para convertir la lista de movimientos a una cadena JSON
+    private String movimientosToJsonString(ArrayList<Movimiento> movimientosExtras) throws JSONException {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Movimiento movimiento : movimientosExtras) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("idMovimiento", movimiento.getIdMovimiento());
+            jsonObject.put("idCuenta", movimiento.getIdCuenta());
+            jsonObject.put("monto", movimiento.getMonto());
+            jsonObject.put("descripcion", movimiento.getDescripcion());
+            jsonObject.put("fechaMovimiento", movimiento.getFechaMovimiento());
+
+            jsonArray.put(jsonObject);
+        }
+
+        return jsonArray.toString();
+    }
+
 
 }

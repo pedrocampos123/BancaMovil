@@ -189,7 +189,7 @@ public class FragmentStatement extends Fragment implements ShortsAdapter.OnTrans
                     // Ejecutar la llamada a la API en un hilo separado utilizando AsyncTask
                     //new APICallTask().execute(email, password);
                     RequestEstadoDeCuenta task = new RequestEstadoDeCuenta(requireContext());
-                    task.execute(String.valueOf(CuentaOrigen));
+                    task.execute(String.valueOf(CuentaOrigen), String.valueOf(usuario.getIdUsuario()));
                 }
 
                 // Restablecer los controles a su estado original
