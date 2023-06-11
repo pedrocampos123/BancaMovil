@@ -122,6 +122,7 @@ public class DashboardActivity extends AppCompatActivity {
         }
 
         binding.bottomNavigationView.setBackground(null);
+        Usuario finalUsuario = usuario;
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:
@@ -137,7 +138,8 @@ public class DashboardActivity extends AppCompatActivity {
                     replaceFragment(retiroFragment);
                     break;
                 case R.id.estadocuenta:
-                    replaceFragment(estadocuentaFragment);
+                    FragmentStatement estadocuentaFragments = FragmentStatement.newInstance(finalUsuario, new ArrayList<>());
+                    replaceFragment(estadocuentaFragments);
                     break;
             }
             return true;
