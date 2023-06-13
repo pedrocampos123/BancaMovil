@@ -36,8 +36,11 @@ import com.example.bancamovil.model.Movimiento;
 import com.example.bancamovil.model.Usuario;
 import com.google.android.material.card.MaterialCardView;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 public class FragmentStatement extends Fragment implements ShortsAdapter.OnTransferClickListener {
 
@@ -177,7 +180,10 @@ public class FragmentStatement extends Fragment implements ShortsAdapter.OnTrans
 
                 // Configurar los valores de los TextViews
                 descriptionTextView.setText(movimiento.getDescripcion());
-                amountTextView.setText(String.format("$%.2f", movimiento.getMonto()));
+                NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.US);
+                numberFormat.setCurrency(Currency.getInstance("USD"));
+                String formattedAmount = numberFormat.format(movimiento.getMonto());
+                amountTextView.setText(formattedAmount);
 
                 if (movimiento.getMonto() < 0) {
                     amountTextView.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
